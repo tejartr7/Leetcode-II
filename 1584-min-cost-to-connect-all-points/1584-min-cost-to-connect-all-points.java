@@ -29,20 +29,8 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             pair currentPair = new pair(p[i][0], p[i][1]);
-            String currentKey = currentPair.x + ":" + currentPair.y; // Create a unique key
-            
+            String currentKey = currentPair.x + ":" + currentPair.y;
             set.add(currentKey);
-            
-            for (int j = 0; j < n; j++) {
-                if (i != j) {
-                    pair neighborPair = new pair(p[j][0], p[j][1]);
-                    String neighborKey = neighborPair.x + ":" + neighborPair.y; // Create a unique key
-                    int dist = Math.abs(p[i][0] - p[j][0]) + Math.abs(p[i][1] - p[j][1]);
-                    
-                    map.putIfAbsent(currentKey, new ArrayList<>()); // Ensure the list exists
-                    map.get(currentKey).add(new tuple(neighborPair.x, neighborPair.y, dist));
-                }
-            }
         }
 
         PriorityQueue<tuple> pq = new PriorityQueue<>((x, y) -> x.wt - y.wt);
@@ -55,11 +43,16 @@ class Solution {
                 continue;
             set.remove(tempKey);
             ans += top.wt;
-            for (tuple k : map.getOrDefault(tempKey, new ArrayList<>())) { // Use getOrDefault to handle null
-                String adjacentKey = k.x + ":" + k.y; // Create a unique key
-             //   System.out.println(set);
-                if (set.contains(adjacentKey)) {
-                    pq.offer(k);
+            for(int i=0;i<n;i++)
+            {
+                String key = p[i][0] + ":" + p[i][1];
+                int dist=Math.abs(p[i][0]-top.x)+Math.abs(p[i][1]-top.y);
+                if(!tempKey.equals(key))
+                {
+                    if(set.contains(key))
+                    {
+                        pq.offer(new tuple(p[i][0],p[i][1],dist));
+                    }
                 }
             }
         }
