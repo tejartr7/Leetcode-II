@@ -28,7 +28,8 @@ class Solution {
                             temp.add(nums[k]);
                             temp.add(nums[l]);
                             list.add(new ArrayList<>(temp));
-                            
+                            while(k<n&& nums[k-1]==nums[k])
+                                k++;
                             while(l>k && nums[l-1]==nums[l])
                             l--;
                             l--;
