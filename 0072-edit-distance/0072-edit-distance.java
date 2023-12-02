@@ -20,7 +20,7 @@ class Solution {
         }
     }
     public int minDistance(String word1, String word2) {
-        dp=new int[501][501];
+        dp=new int[word1.length()+1][word2.length()+1];
         for(int x[]:dp)
             Arrays.fill(x,-1);
         return helper(0,0,word1,word2);
