@@ -29,10 +29,7 @@ public class Solution {
             List<Pair> sortedGroup = new ArrayList<>(group);
             
             sortedGroup.sort(Comparator.comparingInt(p -> p.index));
-            for(Pair x:sortedGroup)
-            {
-                System.out.println(x.element+" "+x.index);
-            }
+            
             for (int i = 0; i < group.size(); ++i)
                 nums[sortedGroup.get(i).index] = group.get(i).element;
         }
