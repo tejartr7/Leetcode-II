@@ -1,9 +1,8 @@
 class Solution {
-    private List<Integer> answer = new ArrayList<>();
     public List<Integer> inorderTraversal(TreeNode root) {
         Stack<TreeNode> stack=new Stack<>();
-       // stack.push(root);
-       TreeNode node=root;
+        List<Integer> answer = new ArrayList<>();
+        TreeNode node=root;
         while(true)
         {
             if(node!=null)
