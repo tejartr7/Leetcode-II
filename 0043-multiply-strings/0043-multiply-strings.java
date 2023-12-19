@@ -1,7 +1,7 @@
 class Solution {
     public String multiply(String nums1, String nums2) {
         int i, j, m = nums1.length(), n = nums2.length();
-        int res[] = new int[m + n + 1];
+        int res[] = new int[m + n ];
         int c = 0;
         for (i = n - 1; i >= 0; i--) {
             for (j = m - 1; j >= 0; j--) {
@@ -16,7 +16,7 @@ class Solution {
         int idx = 0;
         while (idx < res.length && res[idx] == 0)
             idx++;
-        while (idx < res.length-1) {
+        while (idx < res.length) {
             ans.append(res[idx++]);
         }
         return ans.length() == 0 ? "0" : ans.toString();
