@@ -1,41 +1,35 @@
 class Solution {
-    public int minDifficulty(int[] jobDifficulty, int d) {
-        int n = jobDifficulty.length;
-        if (n < d) {
-            return -1; // Cannot complete in d days
-        }
-
-        int[][] dp = new int[n][d + 1];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
-        }
-
-        return helper(0, d, jobDifficulty, dp);
-    }
-
-    private int helper(int idx, int d, int[] jobDifficulty, int[][] dp) {
-        if (idx == jobDifficulty.length) {
-            return (d == 0) ? 0 : Integer.MAX_VALUE; // Return 0 if all jobs are completed
+    int dp[][];
+    public int helper(int idx, int d, int[] job) {
+        int n = job.length;
+        if (idx >= n) {
+            if (d == 0) {
+                return 0;
+            }
+            return 1000_000_000;
         }
         if(d<0)
-            return Integer.MAX_VALUE; 
-        if (dp[idx][d] != -1) {
+            return 1000_000_000;
+        if(dp[idx][d]!=-1)
             return dp[idx][d];
+        int ans = 1000_000_000;
+        int max = job[idx];
+        for (int i = idx; i < n; i++) {
+            max = Math.max(max, job[i]);
+            int q = max + helper(i + 1, d - 1, job);
+            if(q<1000_000_000)
+            ans = Math.min(ans, q);
         }
+        return dp[idx][d]=ans;
+    }
 
-        int maxDifficulty = jobDifficulty[idx];
-        int result = Integer.MAX_VALUE;
-
-        for (int i = idx; i < jobDifficulty.length; i++) {
-            maxDifficulty = Math.max(maxDifficulty, jobDifficulty[i]);
-
-            int remainingDifficulty = helper(i + 1, d - 1, jobDifficulty, dp);
-            if (remainingDifficulty != Integer.MAX_VALUE) {
-                result = Math.min(result, maxDifficulty + remainingDifficulty);
-            }
-        }
-
-        dp[idx][d] = result;
-        return result;
+    public int minDifficulty(int[] job, int d) {
+        if(job.length<d)
+            return -1;
+        dp=new int[job.length][d+1];
+        for(int x[]:dp)
+            Arrays.fill(x,-1);
+        int result = helper(0, d, job);
+        return result >= 1000_000_000 ? -1 : result;
     }
 }
