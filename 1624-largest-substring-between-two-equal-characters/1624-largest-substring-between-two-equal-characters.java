@@ -2,16 +2,18 @@ class Solution {
     public int maxLengthBetweenEqualCharacters(String s) {
         int i,j,n=s.length();
         int ans=-1;
-        for(i=0;i<n-1;i++)
+        int []cnt=new int[26];
+        Arrays.fill(cnt,-1);
+        for(i=n-1;i>=0;i--)
         {
-            for(j=n-1;j>i;j--)
-            {
-                if(s.charAt(i)==s.charAt(j))
-                {
-                    ans=Math.max(ans,j-i-1);
-                    break;
-                }
-            }
+            int x=s.charAt(i)-'a';
+            if(cnt[x]==-1)
+                cnt[x]=i;
+        }
+        for(i=0;i<n;i++)
+        {
+            int x=s.charAt(i)-'a';
+            ans=Math.max(ans,cnt[x]-i-1);
         }
         return ans;
     }
