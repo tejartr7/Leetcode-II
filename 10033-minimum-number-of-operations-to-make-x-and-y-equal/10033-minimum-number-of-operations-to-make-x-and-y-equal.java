@@ -7,29 +7,6 @@ class pair{
     }
 }
 class Solution {
-    int dp[][];
-    public int helper(int x, int y) {
-        System.out.println(x+" "+y);
-        if (y > x)
-            return Integer.MAX_VALUE;
-        if (x == y)
-            return 0;
-        if (dp[x][y] != -1)
-            return dp[x][y];
-
-        int ans = Integer.MAX_VALUE;
-        if(y!=0)
-        ans = Math.min(ans, 1 + helper(x, y * 11));
-        if(y!=0)
-        ans = Math.min(ans, 1 + helper(x, y * 5));
-        if (x > y)
-            ans = Math.min(ans, 1 + helper(x, y+1));
-        ans = Math.min(ans, 1 + helper(x, y-1));
-
-        dp[x][y] = ans;
-        return ans;
-    }
-
     public int minimumOperationsToMakeEqual(int x, int y) {
         int ans=0;
         if(y>=x)
