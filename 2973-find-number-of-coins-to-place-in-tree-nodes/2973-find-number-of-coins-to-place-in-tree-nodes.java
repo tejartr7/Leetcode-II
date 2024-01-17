@@ -1,67 +1,42 @@
-class ChildCost {
-  public ChildCost(int cost) {
-    if (cost > 0)
-      maxPosCosts.add(cost);
-    else
-      minNegCosts.add(cost);
-  }
-
-  public void update(ChildCost childCost) {
-    numNodes += childCost.numNodes;
-    maxPosCosts.addAll(childCost.maxPosCosts);
-    minNegCosts.addAll(childCost.minNegCosts);
-    maxPosCosts.sort(Comparator.reverseOrder());
-    minNegCosts.sort(Comparator.naturalOrder());
-    if (maxPosCosts.size() > 3)
-      maxPosCosts = maxPosCosts.subList(0, 3);
-    if (minNegCosts.size() > 2)
-      minNegCosts = minNegCosts.subList(0, 2);
-  }
-
-  public long maxProduct() {
-    if (numNodes < 3)
-      return 1;
-    if (maxPosCosts.isEmpty())
-      return 0;
-    long res = 0;
-    if (maxPosCosts.size() == 3)
-      res = (long) maxPosCosts.get(0) * maxPosCosts.get(1) * maxPosCosts.get(2);
-    if (minNegCosts.size() == 2)
-      res = Math.max(res, (long) minNegCosts.get(0) * minNegCosts.get(1) * maxPosCosts.get(0));
-    return res;
-  }
-
-  private int numNodes = 1;
-  private List<Integer> maxPosCosts = new ArrayList<>();
-  private List<Integer> minNegCosts = new ArrayList<>();
-}
-
 class Solution {
-  public long[] placedCoins(int[][] edges, int[] cost) {
-    final int n = cost.length;
-    long[] ans = new long[n];
-    List<Integer>[] tree = new List[n];
+    private int[] cost;
+    private List<Integer>[] g;
+    private long[] ans;
 
-    for (int i = 0; i < n; i++)
-      tree[i] = new ArrayList<>();
-
-    for (int[] edge : edges) {
-      final int u = edge[0];
-      final int v = edge[1];
-      tree[u].add(v);
-      tree[v].add(u);
+    public long[] placedCoins(int[][] edges, int[] cost) {
+        int n = cost.length;
+        this.cost = cost;
+        ans = new long[n];
+        g = new List[n];
+        Arrays.fill(ans, 1);
+        Arrays.setAll(g, i -> new ArrayList<>());
+        for (int[] e : edges) {
+            int a = e[0], b = e[1];
+            g[a].add(b);
+            g[b].add(a);
+        }
+        dfs(0, -1);
+        return ans;
     }
 
-    dfs(tree, 0, /*prev=*/-1, cost, ans);
-    return ans;
-  }
-
-  private ChildCost dfs(List<Integer>[] tree, int u, int prev, int[] cost, long[] ans) {
-    ChildCost res = new ChildCost(cost[u]);
-    for (final int v : tree[u])
-      if (v != prev)
-        res.update(dfs(tree, v, u, cost, ans));
-    ans[u] = res.maxProduct();
-    return res;
-  }
+    private List<Integer> dfs(int a, int fa) {
+        List<Integer> res = new ArrayList<>();
+        res.add(cost[a]);
+        for (int b : g[a]) {
+            if (b != fa) {
+                res.addAll(dfs(b, a));
+            }
+        }
+        Collections.sort(res);
+        int m = res.size();
+        if (m >= 3) {
+            long x = (long) res.get(m - 1) * res.get(m - 2) * res.get(m - 3);
+            long y = (long) res.get(0) * res.get(1) * res.get(m - 1);
+            ans[a] = Math.max(0, Math.max(x, y));
+        }
+        if (m >= 5) {
+            res = List.of(res.get(0), res.get(1), res.get(m - 3), res.get(m - 2), res.get(m - 1));
+        }
+        return res;
+    }
 }
