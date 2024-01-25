@@ -1,25 +1,30 @@
 class Solution {
-    int count = 0;
-        
-    public void preorder(TreeNode node, int path) {
-        if (node != null) {
-            // compute occurences of each digit 
-            // in the corresponding register
-            path = path ^ (1 << node.val);
-            // if it's a leaf check if the path is pseudo-palindromic
-            if (node.left == null && node.right == null) {
-                // check if at most one digit has an odd frequency
-                if ((path & (path - 1)) == 0) {
-                    ++count;
-                }
+    int ans=0;
+    public void helper(TreeNode root,int[] arr)
+    {
+        if(root==null) return ;
+        arr[root.val]++;
+        int temp[]=arr.clone();
+        if(root.left==null && root.right==null)
+        {
+            int odd=0;
+            for(int i=1;i<10;i++)
+            {
+                if(arr[i]%2==1)
+                    odd++;
             }
-            preorder(node.left, path);
-            preorder(node.right, path) ;
+            if(odd<=1)
+                ans++;
+            return ;
         }
+        helper(root.left,arr);
+        arr=temp.clone();
+        helper(root.right,arr);
+        //arr[root.val]--;
     }
-
     public int pseudoPalindromicPaths (TreeNode root) {
-        preorder(root, 0);
-        return count;
+        ans=0;
+        helper(root,new int[10]);
+        return ans;
     }
 }
