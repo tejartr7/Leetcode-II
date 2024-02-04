@@ -12,30 +12,32 @@ class Solution {
         for (i = 0; i < n; i++) {
             map1.put(t.charAt(i), map1.getOrDefault(t.charAt(i), 0) + 1);
         }
-
+        int cnt=map1.size();
         for (i = 0; i < m; i++) {
-            map2.put(s.charAt(i), map2.getOrDefault(s.charAt(i), 0) + 1);
-
-            if (map1.containsKey(s.charAt(i)) && map2.get(s.charAt(i)) <= map1.get(s.charAt(i))) {
-                need++;
+            char ch=s.charAt(i);
+            if(map1.containsKey(ch))
+            {
+                map1.put(ch,map1.get(ch)-1);
+                if(map1.get(ch)==0)
+                    cnt--;
             }
-
-            while (j < m && need == n) {
-                if (i - j + 1 < len) {
-                    len = i - j + 1;
-                    ans = s.substring(j, i + 1);
+            while(j<m && cnt==0)
+            {
+                if(len>i-j+1)
+                {
+                    len=i-j+1;
+                    ans=s.substring(j,i+1);
                 }
-
-                map2.put(s.charAt(j), map2.get(s.charAt(j)) - 1);
-
-                if (map1.containsKey(s.charAt(j)) && map2.get(s.charAt(j)) < map1.get(s.charAt(j))) {
-                    need--;
+                char x=s.charAt(j);
+                if(map1.containsKey(x))
+                {
+                    map1.put(x,map1.get(x)+1);
+                    if(map1.get(x)>0)
+                        cnt++;
                 }
-
                 j++;
             }
         }
-
         return ans;
     }
 }
