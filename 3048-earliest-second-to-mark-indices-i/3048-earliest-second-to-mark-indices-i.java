@@ -11,14 +11,17 @@ class Solution {
     public int earliestSecondToMarkIndices(int[] nums, int[] changeIndices) {
         int n = nums.length;
         int m=changeIndices.length;
-        int low=0,high=m;
+        int low=0,high=m-1;
         int ans=-1;
-        for(int i=0;i<m;i++)
-        {
-            if(isPossible(nums,changeIndices,i))
-                return i+1;
+        while (low <=high) {
+            int mid = (low + high) / 2;
+            if (isPossible(nums, changeIndices, mid)){ 
+                ans=mid+1;
+                high = mid-1;
+            }
+            else low = mid + 1;
         }
-        return -1;
+        return ans;
     }
 
     private boolean isPossible(int[] nums, int[] changeIndices, int s) {
