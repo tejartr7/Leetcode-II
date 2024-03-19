@@ -21,7 +21,6 @@ class Solution {
         while((!pq.isEmpty() || !q.isEmpty()))
         {
             t++;
-            System.out.println(pq);
             if(pq.size()>0)
             {
                 int x=pq.poll();
