@@ -1,10 +1,3 @@
-class pair{
-    long x,y;
-    pair(long a,long b){
-        x=a;
-        y=b;
-    }
-}
 class Solution {
     public long[] mostFrequentIDs(int[] nums, int[] freq) {
         Map<Long,Long> map=new HashMap<>();
