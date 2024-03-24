@@ -3,14 +3,6 @@ class Solution {
  
     public int minOperations(int k) {
         mini=k-1;
-        int x=2;
-        int t=(int)Math.sqrt(k);
-        if(t*t==k)
-        {
-            int temp=t-1;
-            temp+=t-1;
-            mini=Math.min(mini,temp);
-        }
         for(int i=2;i<=k;i++)
         {
             int temp=i-1;
