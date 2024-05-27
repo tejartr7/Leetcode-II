@@ -1,20 +1,16 @@
 class Solution {
     public int specialArray(int[] nums) {
         int n = nums.length;
-        int[] count = new int[n + 1]; // count array to hold counts of numbers greater than or equal to each index
+        int[] count = new int[1001];
         
         // Fill the count array
         for (int num : nums) {
-            if (num >= n) {
-                count[n]++;
-            } else {
-                count[num]++;
-            }
+            count[num]++;
         }
         
         // Find the prefix sums
         int total = 0;
-        for (int i = n; i >= 0; i--) {
+        for (int i = 1000; i >= 0; i--) {
             total += count[i];
             if (total == i) {
                 return i;
