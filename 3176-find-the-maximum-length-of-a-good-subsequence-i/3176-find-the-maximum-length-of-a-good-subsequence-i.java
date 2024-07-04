@@ -1,39 +1,28 @@
 class Solution {
-    int dp[][][];
-    int maxi=0;
-    public int helper(int idx,int []nums,int k,int cnt[],int prev){
-        int i,j,n=nums.length;
-        if(idx>=n){
-            return 0;
-        }
-        if(dp[idx][cnt[0]][prev+1]!=-1)
-            return dp[idx][cnt[0]][prev+1];
-        int notTake=helper(idx+1,nums,k,cnt,prev);
-        int take=0;
-        if(prev!=-1){
-            if(nums[prev]==nums[idx]){
-              take=Math.max(take,1+helper(idx+1,nums,k,cnt,idx));  
+    int dp[][];
+    public int helper(int i,int k,int nums[]){
+        int n=nums.length;
+        if(i>=n) return 0;
+        if(dp[i][k]!=-1) return dp[i][k];
+        int ans=1;
+        for(int x=i-1;x>=0;x--){
+            if(nums[i]==nums[x]){
+                ans=Math.max(ans,1+helper(x,k,nums));
             }
-            else{
-                if(k>cnt[0]){
-                    cnt[0]+=1;
-                    take=Math.max(take,1+helper(idx+1,nums,k,cnt,idx));
-                    cnt[0]-=1;
-                }
+            else if(nums[i]!=nums[x] && k>0){
+                ans=Math.max(ans,1+helper(x,k-1,nums));
             }
-        }else{
-            take=Math.max(take,1+helper(idx+1,nums,k,cnt,idx));
         }
-        return dp[idx][cnt[0]][prev+1]=Math.max(take,notTake);
+        return dp[i][k]=ans;
     }
     public int maximumLength(int[] nums, int k) {
+        dp=new int[501][26];
+        for(int x[]:dp) Arrays.fill(x,-1);
         int i,j,n=nums.length;
-        dp=new int[n+1][k+1][n+1];
-        for(int x[][]:dp){
-            for(int y[]:x){
-                Arrays.fill(y,-1);
-            }
+        int ans=0;
+        for(i=0;i<n;i++){
+            ans=Math.max(ans,helper(i,k,nums));
         }
-        return helper(0,nums,k,new int[1],-1);     
+        return ans;
     }
 }
