@@ -1,37 +1,49 @@
+import java.util.ArrayList;
+import java.util.List;
+
 class Solution {
     public List<Integer> luckyNumbers (int[][] matrix) {
-        Set<String> set= new HashSet<>();
-        List<Integer> list=new ArrayList<>();
-        int i,j,m=matrix.length,n=matrix[0].length;
-        for(j=0;j<n;j++){
-            int maxi=-1;
-            int x=-1;
-            for(i=0;i<m;i++){
-                if(matrix[i][j]>maxi){
-                    maxi=matrix[i][j];
-                    x=i;
+        int m = matrix.length, n = matrix[0].length;
+        int[] rowMin = new int[m];
+        int[] colMax = new int[n];
+        
+        // Initialize the rowMin and colMax arrays
+        for (int i = 0; i < m; i++) {
+            rowMin[i] = Integer.MAX_VALUE;
+        }
+        
+        for (int j = 0; j < n; j++) {
+            colMax[j] = Integer.MIN_VALUE;
+        }
+        
+        // Find the minimum values in each row
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] < rowMin[i]) {
+                    rowMin[i] = matrix[i][j];
                 }
             }
-            String s="";
-            s=x+" ";
-            s+=j;
-            set.add(s);
         }
-        for(i=0;i<m;i++){
-            int mini=1000_000_000,x=-1;
-            for(j=0;j<n;j++){
-                if(mini>matrix[i][j]){
-                    mini=matrix[i][j];
-                    x=j;
+        
+        // Find the maximum values in each column
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < m; i++) {
+                if (matrix[i][j] > colMax[j]) {
+                    colMax[j] = matrix[i][j];
                 }
             }
-            String s="";
-            s=i+" ";
-            s+=x;
-            if(set.contains(s)){
-                list.add(mini);
+        }
+        
+        // Find the lucky numbers
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == rowMin[i] && matrix[i][j] == colMax[j]) {
+                    list.add(matrix[i][j]);
+                }
             }
         }
+        
         return list;
     }
 }
