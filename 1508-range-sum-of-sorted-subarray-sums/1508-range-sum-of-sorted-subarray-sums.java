@@ -1,21 +1,29 @@
+import java.util.*;
+
 class Solution {
     public int rangeSum(int[] nums, int n, int left, int right) {
-        int i,j;
-        List<Integer> list=new ArrayList<>();
-        int sum=0;
-        for(i=0;i<n;i++){
-            int x=0;
-            for(j=i;j<n;j++){
-                x+=nums[j];
-                list.add(x);
+        long mod = 1000_000_007;
+        long ans = 0;
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        // Iterate through each subarray and use a min-heap to maintain the smallest sums
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = i; j < n; j++) {
+                sum += nums[j];
+                minHeap.offer(sum);
             }
         }
-        Collections.sort(list);
-        long ans=0;
-        long mod=1000_000_007;
-        for(i=left-1;i<right;i++){
-            ans=(ans+list.get(i))%mod;
+
+        // Extract the required sums from the min-heap
+        for (int i = 1; i <= right; i++) {
+            int min = minHeap.poll();
+            if (i >= left) {
+                ans = (ans + min) % mod;
+            }
         }
-        return (int)(ans%mod);
+
+        return (int) (ans % mod);
     }
 }
