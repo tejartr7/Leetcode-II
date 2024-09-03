@@ -1,91 +1,54 @@
 class Solution {
+    final int mod = 1_000_000_007;
     
-    int mod = 1_000_000_007;
-    
-    public int[] getFinalState(int[] nums, int k, int multiplier) {
-        
-        if (multiplier == 1)
-            return nums;
-        
-       PriorityQueue<int []> queue = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-        
-        for (int i = 0; i < nums.length; ++i) {
-            queue.add(new int [] {nums[i], i});
+    long modpow(long base, int exp) {
+        long result = 1;
+        while (exp > 0) {
+            if (exp % 2 != 0) {
+                result = (result * base) % mod;
+            }
+            base = (base * base) % mod;
+            exp /= 2;
         }
-        
-        int max = 0;
-        
-        for (int num : nums) {
-            max = Math.max(max, num);
-        }
-        
-        long val;
-        
-        int [] cur;
-        
-        while (k > 0 && max / queue.peek()[0] >= multiplier) {
-           
-            cur = queue.poll();
-           
-            cur[0] *= multiplier;
-            nums[cur[1]] = cur[0];
-            queue.add(cur);
-            --k;
-        }
-        
-        int times = k / nums.length;
-        int rem = k % nums.length;
-        
-        int [] result = new int [nums.length];
-        
-        long first = powerSum(multiplier, times, mod);
-        long second = powerSum(multiplier, times + 1, mod);
-        
-        
-        //System.out.println(k);
-        
-        
-        while (!queue.isEmpty()) {
-            
-            cur = queue.poll();
-            //System.out.println(Arrays.toString(cur));
-            
-            val = rem-- > 0 ? second : first;
-            val *= cur[0];
-            val %= mod;
-            
-            result[cur[1]] = (int)val;
-        }
-        
         return result;
     }
-    
-    private long powerSum(long a, long b, int mod) {
-		Map<Long, Long> map = new HashMap<>();
-		
-		long current = 1;
-		long val = a;
-		long result = 1;
-		
-		while (current <= b) {
-			map.put(current, val);
-			
-			val = val * val;
-			val %= mod;
-			
-			current *= 2;
-		}
-		
-		while (current > 1) {
-			current /= 2;
-			
-			if (b >= current) {
-				b -= current;
-				result *= map.get(current);
-				result %= mod;
-			}
-		}
-		
-		return result;
-	}
+
+    class Pair {
+        int x, y;
+        Pair(int a, int b) {
+            x = a;
+            y = b;
+        }
+    }
+
+    public int[] getFinalState(int[] nums, int k, int mul) {
+        int n = nums.length;
+        int maxi = 0;
+        if(mul==1) return nums;
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) ->a.x!=b.x? a.x - b.x:a.y-b.y);
+        for (int i = 0; i < n; i++) {
+            maxi = Math.max(nums[i], maxi);
+            pq.offer(new Pair(nums[i], i));
+        }
+
+        while (k > 0 && (long) mul * pq.peek().x <= maxi) {
+            k--;
+            Pair top = pq.poll();
+            pq.offer(new Pair((int) ((long) top.x * mul % mod), top.y));
+        }
+
+        long pow = modpow(mul, k / n);
+        int remainingK = k % n;
+        while (!pq.isEmpty()) {
+            Pair top = pq.poll();
+            if (remainingK > 0) {
+                remainingK--;
+                nums[top.y] = (int) (((long) top.x * mul % mod) * pow % mod);
+            } else {
+                nums[top.y] = (int) ((long) top.x * pow % mod);
+            }
+        }
+
+        return nums;
+    }
 }
