@@ -1,71 +1,30 @@
 class Solution {
-    public int robotSim(int[] nums, int[][] arr) {
-        Map<Integer, TreeSet<Integer>> map1 = new HashMap<>();
-        Map<Integer, TreeSet<Integer>> map2 = new HashMap<>();
-        int m = nums.length, maxi = 0;
-
-        // Store obstacles in the maps
-        for (int[] x : arr) {
-            int a = x[0], b = x[1];
-            if (!map1.containsKey(a)) map1.put(a, new TreeSet<>());
-            if (!map2.containsKey(b)) map2.put(b, new TreeSet<>());
-            map1.get(a).add(b);
-            map2.get(b).add(a);
+    public int robotSim(int[] commands, int[][] obstacles) {
+        int x=0,y=0,d=0;
+        int[][] direction={{0,1},{1,0},{0,-1},{-1,0}};
+        int maxDistance=0;
+        Set<String> obstacleSet=new HashSet<>();
+        for(int[] obstacle:obstacles){
+            obstacleSet.add(obstacle[0]+","+obstacle[1]);
         }
-
-        int a = 0, b = 0; // Robot's starting position
-        boolean north = true, east = false, south = false, west = false;
-
-        for (int i = 0; i < m; i++) {
-            int x = nums[i];
-            if (x == -1) { // Turn right
-                if (north) { north = false; east = true; }
-                else if (east) { east = false; south = true; }
-                else if (south) { south = false; west = true; }
-                else { west = false; north = true; }
-            } else if (x == -2) { // Turn left
-                if (north) { north = false; west = true; }
-                else if (west) { west = false; south = true; }
-                else if (south) { south = false; east = true; }
-                else { east = false; north = true; }
-            } else { // Move forward
-                if (north) {
-                    int p = b + x;
-                    Integer q = map1.getOrDefault(a, new TreeSet<>()).ceiling(b + 1);
-                    if (q == null || q > p) {
-                        b = p;
-                    } else {
-                        b = q - 1;
+        for(int cmd:commands){
+            if(cmd==-1){
+                d=(d+1)%4;
+            }else if(cmd==-2){
+                d=(d+3)%4;
+            }else{
+                for(int i=0;i<cmd;i++){
+                    int nx=x+direction[d][0];
+                    int ny=y+direction[d][1];
+                    if(obstacleSet.contains(nx+","+ny)){
+                        break;
                     }
-                } else if (east) {
-                    int p = a + x;
-                    Integer q = map2.getOrDefault(b, new TreeSet<>()).ceiling(a + 1);
-                    if (q == null || q > p) {
-                        a = p;
-                    } else {
-                        a = q - 1;
-                    }
-                } else if (south) {
-                    int p = b - x;
-                    Integer q = map1.getOrDefault(a, new TreeSet<>()).floor(b - 1);
-                    if (q == null || q < p) {
-                        b = p;
-                    } else {
-                        b = q + 1;
-                    }
-                } else { // West
-                    int p = a - x;
-                    Integer q = map2.getOrDefault(b, new TreeSet<>()).floor(a - 1);
-                    if (q == null || q < p) {
-                        a = p;
-                    } else {
-                        a = q + 1;
-                    }
+                    x=nx;
+                    y=ny;
+                    maxDistance=Math.max(maxDistance,x*x+y*y);
                 }
             }
-            // Calculate maximum Euclidean distance
-            maxi = Math.max(maxi, a * a + b * b);
         }
-        return maxi;
+        return maxDistance;
     }
 }
