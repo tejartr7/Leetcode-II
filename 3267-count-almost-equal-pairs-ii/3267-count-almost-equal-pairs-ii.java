@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 class Solution { 
     public int countPairs(int[] nums) {
         int i, j, n = nums.length;
@@ -22,18 +24,16 @@ class Solution {
         for (int i = 0; i < 8; i++) {
             if (a[i] != b[i]) {
                 cnt++;
-                if (cnt > 4) return false; // More than 4 differences, not valid
+                if (cnt > 4) return false;
                 diff[idx++] = i;
             }
         }
 
         if (cnt == 0) {
-            return true; // No differences, they are identical
+            return true;
         } else if (cnt == 2) {
-            // Two mismatches, check if they are swapped
             return a[diff[0]] == b[diff[1]] && a[diff[1]] == b[diff[0]];
         } else if (cnt == 3) {
-            // Three mismatches, check if they can be cyclically rotated
             int[] p = {a[diff[0]], a[diff[1]], a[diff[2]]};
             int[] q = {b[diff[0]], b[diff[1]], b[diff[2]]};
             Arrays.sort(p);
