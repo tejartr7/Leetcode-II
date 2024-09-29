@@ -45,15 +45,15 @@ class AllOne {
         }
     }
 
-    public List<Map.Entry<String, Integer>> getSortedByCount() {
-        List<Map.Entry<String, Integer>> result = new ArrayList<>();
-        for (Map.Entry<Integer, Set<String>> entry : sortedCountMap.entrySet()) {
-            for (String s : entry.getValue()) {
-                result.add(new java.util.AbstractMap.SimpleEntry<>(s, entry.getKey()));
-            }
-        }
-        return result;
-    }
+    // public List<Map.Entry<String, Integer>> getSortedByCount() {
+    //     List<Map.Entry<String, Integer>> result = new ArrayList<>();
+    //     for (Map.Entry<Integer, Set<String>> entry : sortedCountMap.entrySet()) {
+    //         for (String s : entry.getValue()) {
+    //             result.add(new java.util.AbstractMap.SimpleEntry<>(s, entry.getKey()));
+    //         }
+    //     }
+    //     return result;
+    // }
 
     public String getMaxKey() {
         if (sortedCountMap.isEmpty()) {
