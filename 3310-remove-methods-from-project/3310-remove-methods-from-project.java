@@ -42,31 +42,9 @@ class Solution {
         // Check each component
         boolean[] componentVisited = new boolean[n];
         for (int i = 0; i < n; i++) {
-            if (!componentVisited[i]) {
-                List<Integer> component = new ArrayList<>();
+            if (!infected[i] && !componentVisited[i]) {
                 boolean[] tempVisited = new boolean[n];
-                findComponent(i, component, tempVisited);
-                
-                // Check if the component has any uninfected node
-                boolean hasUninfected = false;
-                for (int node : component) {
-                    if (!infected[node]) {
-                        hasUninfected = true;
-                        break;
-                    }
-                }
-                
-                // If there’s an uninfected node, mark the whole component as uninfected
-                if (hasUninfected) {
-                    for (int node : component) {
-                        resultSet.add(node);
-                    }
-                }
-                
-                // Mark the entire component as visited
-                for (int node : component) {
-                    componentVisited[node] = true;
-                }
+                findComponent(i, resultSet, componentVisited);
             }
         }
         
@@ -74,16 +52,16 @@ class Solution {
         return remainingNodes;
     }
     
-    private void findComponent(int node, List<Integer> component, boolean[] tempVisited) {
+    private void findComponent(int node, Set<Integer> resultSet, boolean[] tempVisited) {
         if (tempVisited[node]) return;
         
         tempVisited[node] = true;
-        component.add(node);
+        resultSet.add(node);
         
         if (graph.containsKey(node)) {
             for (int neighbor : graph.get(node)) {
                 if (!tempVisited[neighbor]) {
-                    findComponent(neighbor, component, tempVisited);
+                    findComponent(neighbor, resultSet, tempVisited);
                 }
             }
         }
