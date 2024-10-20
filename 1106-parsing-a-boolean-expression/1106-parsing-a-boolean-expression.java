@@ -1,6 +1,5 @@
 class Solution {
     public boolean parseBoolExpr(String s) {
-        boolean ans=true;
         int i,j,n=s.length();
         Stack<Character> stack=new Stack<>();
         for(i=0;i<n;i++){
@@ -21,7 +20,7 @@ class Solution {
                 else if(prev=='&'){
                     stack.push(f > 0 ? 'f' : 't');
                 }
-                else if(prev=='!'){
+                else {
                     stack.push(f > 0 ? 't' : 'f');
                 }
             }
