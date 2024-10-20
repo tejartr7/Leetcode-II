@@ -13,39 +13,22 @@ class Solution {
                     if(top=='t') t++;
                     else if(top=='f') f++;
                 }
-                if(stack.size()>0 && stack.peek()=='(')
-                stack.pop();
-                if(stack.size()>0){
-                    prev=stack.pop();
-                }
+                stack.pop(); 
+                prev=stack.pop();
                 if(prev=='|'){
-                    if(t>0){
-                        stack.push('t');
-                    }
-                    else stack.push('f');
+                    stack.push(t > 0 ? 't' : 'f');
                 }
                 else if(prev=='&'){
-                    if(f>0){
-                        stack.push('f');
-                    }
-                    else stack.push('t');
+                    stack.push(f > 0 ? 'f' : 't');
                 }
                 else if(prev=='!'){
-                    if(t>0){
-                        stack.push('f');
-                    }
-                    else stack.push('t');
+                    stack.push(f > 0 ? 't' : 'f');
                 }
             }
             else if(ch=='!' ||ch=='(' || ch=='&' || ch=='|' || ch=='f' || ch=='t'){
                 stack.push(ch);
             }
-            //System.out.println(stack);
         }
-        if(stack.size()>0){
-            return stack.peek()=='t';
-        }
-        
-        return false;
+        return stack.peek()=='t';
     }
 }
