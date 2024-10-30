@@ -1,8 +1,6 @@
 class Solution {
-    int n;
     public int minimumMountainRemovals(int[] nums) {
-        int i,j;
-        n=nums.length;
+        int i,j,n=nums.length;
         int mini=1000_000_000;
         int left[]=new int[n];
         int right[]=new int[n];
