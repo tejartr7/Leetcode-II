@@ -22,13 +22,11 @@ class Solution {
                 while(temp>0){
                     if(temp%2==1)
                     cnt[x]--;
+                    if(cnt[x]==0){
+                        curr&=~(1<<x);
+                    }
                     temp/=2;
                     x++;
-                }
-                curr=0;
-                for(x=0;x<32;x++){
-                    if(cnt[x]>0)
-                        curr|=(1<<x);
                 }
                 i++;
             }
