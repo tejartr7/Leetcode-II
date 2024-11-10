@@ -20,8 +20,10 @@ class Solution {
 
         // Case 2
         for (i = 0, j = 0; j < n; j++) {
-            while (A[i] + k + k < A[j]) {
+            int mid=(A[i]+A[j])/2;
+            while(mid - A[i] > k || A[j] - mid > k) {
                 i++;
+                mid = (A[i] + A[j]) / 2;
             }
             res = Math.max(res, Math.min(j - i + 1, numOperations));
         }
