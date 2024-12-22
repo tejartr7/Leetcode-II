@@ -26,7 +26,7 @@ class Solution {
           for(int i: idx) {
               int a = q[i][0];
               int b = q[i][1];
-              System.out.println(a+" "+b);
+              //System.out.println(a+" "+b);
               while(adi > b && adi >= 0) {
                   while(tm.size() > 0 && tm.firstKey() < h[adi]) {
                     tm.remove(tm.firstKey());
